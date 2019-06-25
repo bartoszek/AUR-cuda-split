@@ -57,6 +57,11 @@ provides=('cuda-toolkit' 'cuda-sdk')
   chmod +x ${pkgdir}/opt/cuda/bin/g{cc,++}
 # ln -s /usr/bin/gcc-8 "${pkgdir}/opt/cuda/bin/gcc"
 # ln -s /usr/bin/g++-8 "${pkgdir}/opt/cuda/bin/g++"
+  
+  # Allow ccache to work with NVCC
+  mv "${pkgdir}/opt/cuda/bin/nvcc" "${pkgdir}/opt/cuda/bin/nvcc.bin"
+  echo -e "#!/bin/sh -\n[ -f /usr/bin/ccache ] && exec /usr/bin/ccache /opt/cuda/bin/nvcc.bin \"\$@\" || exec /opt/cuda/bin/nvcc.bin \"\$@\"" > "${pkgdir}/opt/cuda/bin/nvcc"
+  chmod +x "${pkgdir}/opt/cuda/bin/nvcc"
 
   # Create soname links.
   # We have to be weird about this since for some reason the ELF SONAME is incorrect or at least partially incorrect for some libs.
