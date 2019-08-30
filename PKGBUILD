@@ -5,7 +5,7 @@ pkgname=(cuda nvidia-nsight)
 #pkgname+=(libcudart)
 pkgver=10.1.243
 _driverver=418.87.00
-pkgrel=1
+pkgrel=9
 pkgdesc="NVIDIA's GPU programming toolkit"
 arch=('x86_64')
 url="https://developer.nvidia.com/cuda-zone"
@@ -35,6 +35,7 @@ depends=('gcc8-libs'  'gcc8' 'opencl-nvidia' 'nvidia-utils')
 optdepends=('nvidia-nsight: for Nvidia IDE, examples, samples, doc, nvpp')
 replaces=('cuda-toolkit' 'cuda-sdk')
 provides=('cuda-toolkit' 'cuda-sdk')
+provides+=('libcudart.so')
   mkdir -p "${pkgdir}/opt/"
 
   cd "${srcdir}/builds"
