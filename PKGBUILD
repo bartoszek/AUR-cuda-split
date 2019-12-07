@@ -17,7 +17,7 @@ source=(http://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_instal
         cuda.conf
         cuda-findgllib_mk.diff)
 sha512sums=('f92b19d0242969a65a6e6db43bc293e442abc07a9e168c9e995692e1a401679504598c782e511be3879e1650b90f71a50bbc63c9ee45654c26b5007cdf33c4fe'
-            'ce0b8df5d918ec8429da4ab8f9dee463ac04055ee5b0beeb0386b67d765a4c892d314995776a0d695cd06bcfbaf996e4904935ddc898a9d774f6bf965d989dea'
+            'b3691913027b8390161c7412d87a905712d90434cc82027a52f203f8ae3dda755738f734f8190277471e4541d685b524568ad03af58d4b7ebad346eee11c10e4'
             '714d973bc79446f73bebe85306b3566fe25b554bcbcba2fcbe76709a3eca71fb5d183ab4da2d3b5e9326cb9cd8d13a93f6d4a005ea5a41f7ef8e6c6e81e06b5e'
             '41d6b6cad934f135eafde610d1cbd862033977fd4416a4b6abaa47709a70bab7fcf6f8377c21329084fb9db13f2a8c8c20e93c15292d7d4a6448d70a33b23f1b')
 
@@ -85,6 +85,11 @@ provides+=('libcudart.so')
 
   # Allow GCC 9 to work
   sed -i "/.*unsupported GNU version.*/d" "${pkgdir}"/opt/cuda/targets/x86_64-linux/include/crt/host_config.h
+
+  # Fix Makefile paths to CUDA
+  for f in $(find "$pkgdir"/opt/cuda -name Makefile); do
+    sed -i "s|/usr/local/cuda|/opt/cuda|g" "$f"
+  done
 
   # Remove nsight, extra etc.
   local targets=('nsight-{compute,systems}*' 'libnsight' 'nsightee_plugins' 'doc' 'samples' 'extras' 'libnvvp')
